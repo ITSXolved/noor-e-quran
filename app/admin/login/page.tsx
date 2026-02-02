@@ -107,11 +107,6 @@ export default function AdminLoginPage() {
                                 {isLoading ? 'Signing in...' : 'Sign In'}
                             </Button>
                         </form>
-
-                        <div className="mt-4 text-center text-sm text-gray-600">
-                            <p>Default credentials for testing:</p>
-                            <p className="font-mono text-xs mt-1">admin@zyraedu.com / admin123</p>
-                        </div>
                     </CardContent>
                 </Card>
             </div>
