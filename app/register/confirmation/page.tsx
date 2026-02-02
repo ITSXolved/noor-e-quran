@@ -1,12 +1,12 @@
 'use client';
 
-import { CheckCircle, Phone, Mail, Home } from 'lucide-react';
-import Link from 'next/link';
+import { Suspense } from 'react';
+import { CheckCircle, Phone, Mail } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
 
-export default function ConfirmationPage() {
+function ConfirmationContent() {
     const searchParams = useSearchParams();
     const referenceNumber = searchParams.get('ref') || 'N/A';
     const supportPhone = process.env.NEXT_PUBLIC_SUPPORT_PHONE || '+91-1234567890';
@@ -114,5 +114,20 @@ export default function ConfirmationPage() {
                 </Card>
             </div>
         </div>
+    );
+}
+
+export default function ConfirmationPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <p className="text-gray-600">Loading...</p>
+                </div>
+            </div>
+        }>
+            <ConfirmationContent />
+        </Suspense>
     );
 }
