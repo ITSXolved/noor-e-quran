@@ -35,7 +35,7 @@ export const sendUserConfirmationEmail = async ({
     await transporter.sendMail({
       from: `"Zyra Edutech" <${fromEmail}>`,
       to,
-      subject: '🌙 Welcome to Noor-e-Quran | Your Ramadan Journey Begins',
+      subject: 'Welcome to Noor-e-Quran | Your Ramadan Journey Begins',
       html: `
         <!DOCTYPE html>
         <html>
@@ -70,7 +70,7 @@ export const sendUserConfirmationEmail = async ({
               
               <p>Welcome to <strong>Noor-e-Quran</strong> – Ramadan Special Signature Course.</p>
               
-              <p>With your enrollment of <strong>₹999</strong>, you haven't just joined a course —<br>
+              <p>With your enrollment of <strong>₹999</strong> <span style="text-decoration: line-through; color: #999;">₹3899</span>, you haven't just joined a course —<br>
               you've answered a call towards light, discipline, and inner transformation.</p>
               
               <p>Over the next <strong>27 days</strong>, the Quran will not just be read —<br>

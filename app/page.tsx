@@ -34,7 +34,7 @@ export default function HomePage() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 animate-fade-in">
             <div className="inline-block bg-gradient-zyra text-white px-4 py-2 rounded-full text-sm font-semibold">
-              🎉 LIMITED TIME OFFER - SAVE ₹1,000
+              🎉 LIMITED TIME OFFER - SAVE ₹2,900
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
               Transform Your Quran Connection in{' '}
@@ -50,12 +50,12 @@ export default function HomePage() {
             <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-primary/20">
               <div className="flex items-baseline gap-3 mb-2">
                 <span className="text-4xl font-bold text-primary">₹999</span>
-                <span className="text-2xl text-gray-400 line-through">₹1,999</span>
+                <span className="text-2xl text-gray-400 line-through">₹3899</span>
                 <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  50% OFF
+                  SAVE ₹2,900
                 </span>
               </div>
-              <p className="text-gray-600 text-sm">Special Ramadan Offer • You Save ₹1,000</p>
+              <p className="text-gray-600 text-sm">Special Ramadan Offer • Limited Seats</p>
             </div>
 
             <div className="flex flex-wrap gap-4">
@@ -160,14 +160,14 @@ export default function HomePage() {
             Ready to Transform Your Quran Connection?
           </h2>
           <p className="text-lg text-purple-100 mb-2">
-            Limited Time: ₹999 Only (Regular ₹1,999)
+            Limited Time: ₹999 Only <span className="line-through opacity-75">₹3899</span>
           </p>
           <p className="text-md text-purple-200 mb-8">
             Join 4,500+ students • 7-Day Money-Back Guarantee
           </p>
           <Link href="/register">
             <Button size="lg" variant="secondary" className="shadow-xl">
-              Enroll Now - Save ₹1,000
+              Enroll Now - ₹999
             </Button>
           </Link>
         </div>
