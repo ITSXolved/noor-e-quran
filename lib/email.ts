@@ -1,33 +1,42 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Create transporter for Gmail SMTP
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_FROM || 'zyraedtech@gmail.com',
+    pass: process.env.EMAIL_PASSWORD, // Gmail App Password
+  },
+});
 
 interface SendConfirmationEmailParams {
-    to: string;
+  to: string;
+  name: string;
+  referenceNumber: string;
+  applicationDetails: {
     name: string;
-    referenceNumber: string;
-    applicationDetails: {
-        name: string;
-        email: string;
-        mobile: string;
-        city: string;
-        occupation: string;
-    };
+    email: string;
+    mobile: string;
+    city: string;
+    occupation: string;
+  };
 }
 
 export const sendUserConfirmationEmail = async ({
-    to,
-    name,
-    referenceNumber,
+  to,
+  name,
+  referenceNumber,
 }: Omit<SendConfirmationEmailParams, 'applicationDetails'>) => {
-    const supportPhone = process.env.NEXT_PUBLIC_SUPPORT_PHONE || '+91-1234567890';
+  const supportPhone = process.env.NEXT_PUBLIC_SUPPORT_PHONE || '+91-8128868483';
+  const fromEmail = process.env.EMAIL_FROM || 'zyraedtech@gmail.com';
+  const supportEmail = process.env.SUPPORT_EMAIL || 'info@zyraedu.com';
 
-    try {
-        await resend.emails.send({
-            from: process.env.EMAIL_FROM || 'zyraedtech@gmail.com',
-            to,
-            subject: 'Registration Confirmation - Zyra Edutech',
-            html: `
+  try {
+    await transporter.sendMail({
+      from: `"Zyra Edutech" <${fromEmail}>`,
+      to,
+      subject: 'Registration Confirmation - Zyra Edutech',
+      html: `
         <!DOCTYPE html>
         <html>
         <head>
@@ -60,7 +69,7 @@ export const sendUserConfirmationEmail = async ({
               
               <p><strong>Contact Information:</strong></p>
               <p>Phone: ${supportPhone}<br>
-              Email: zyraedtech@gmail.com</p>
+              Email: ${supportEmail}</p>
               
               <p>If you have any questions, please don't hesitate to contact us.</p>
               
@@ -74,23 +83,27 @@ export const sendUserConfirmationEmail = async ({
         </body>
         </html>
       `,
-        });
-    } catch (error) {
-        console.error('Error sending user confirmation email:', error);
-        throw error;
-    }
+    });
+    console.log('User confirmation email sent successfully to:', to);
+  } catch (error) {
+    console.error('Error sending user confirmation email:', error);
+    throw error;
+  }
 };
 
 export const sendAdminNotificationEmail = async ({
-    applicationDetails,
-    referenceNumber,
+  applicationDetails,
+  referenceNumber,
 }: Pick<SendConfirmationEmailParams, 'applicationDetails' | 'referenceNumber'>) => {
-    try {
-        await resend.emails.send({
-            from: process.env.EMAIL_FROM || 'zyraedtech@gmail.com',
-            to: 'zyraedtech@gmail.com',
-            subject: `New Course Registration - ${referenceNumber}`,
-            html: `
+  const fromEmail = process.env.EMAIL_FROM || 'zyraedtech@gmail.com';
+  const adminEmail = process.env.ADMIN_EMAIL || 'zyraedtech@gmail.com';
+
+  try {
+    await transporter.sendMail({
+      from: `"Zyra Edutech" <${fromEmail}>`,
+      to: adminEmail,
+      subject: `New Course Registration - ${referenceNumber}`,
+      html: `
         <!DOCTYPE html>
         <html>
         <head>
@@ -142,9 +155,10 @@ export const sendAdminNotificationEmail = async ({
         </body>
         </html>
       `,
-        });
-    } catch (error) {
-        console.error('Error sending admin notification email:', error);
-        throw error;
-    }
+    });
+    console.log('Admin notification email sent successfully');
+  } catch (error) {
+    console.error('Error sending admin notification email:', error);
+    throw error;
+  }
 };

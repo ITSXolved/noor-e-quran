@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyPaymentSignature } from '@/lib/razorpay';
 import { getServiceSupabase } from '@/lib/supabase';
+import { sendUserConfirmationEmail, sendAdminNotificationEmail } from '@/lib/email';
 import type { PaymentVerificationData } from '@/types';
 
 export async function POST(request: NextRequest) {
@@ -61,6 +62,34 @@ export async function POST(request: NextRequest) {
         }
 
         console.log('Payment verified successfully for:', application.reference_number);
+
+        // Send confirmation emails
+        try {
+            // Send confirmation email to user
+            await sendUserConfirmationEmail({
+                to: application.email,
+                name: application.name,
+                referenceNumber: application.reference_number,
+            });
+
+            // Send notification email to admin
+            await sendAdminNotificationEmail({
+                referenceNumber: application.reference_number,
+                applicationDetails: {
+                    name: application.name,
+                    email: application.email,
+                    mobile: application.mobile,
+                    city: application.city,
+                    occupation: application.occupation,
+                },
+            });
+
+            console.log('Confirmation emails sent successfully');
+        } catch (emailError) {
+            console.error('Error sending confirmation emails:', emailError);
+            // Don't fail the payment verification if email fails
+            // The payment is still successful
+        }
 
         return NextResponse.json({
             success: true,
