@@ -134,6 +134,12 @@ ON applications FOR UPDATE
 TO authenticated
 USING (true);
 
+-- Admin users can delete applications
+CREATE POLICY "Allow authenticated admin delete applications"
+ON applications FOR DELETE
+TO authenticated
+USING (true);
+
 -- Admin users table policies
 CREATE POLICY "Allow authenticated read admin_users"
 ON admin_users FOR SELECT

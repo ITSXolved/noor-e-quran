@@ -35,47 +35,71 @@ export const sendUserConfirmationEmail = async ({
     await transporter.sendMail({
       from: `"Zyra Edutech" <${fromEmail}>`,
       to,
-      subject: 'Registration Confirmation - Zyra Edutech',
+      subject: '🌙 Welcome to Noor-e-Quran | Your Ramadan Journey Begins',
       html: `
         <!DOCTYPE html>
         <html>
         <head>
           <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #B946C7 0%, #8B2F9E 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-            .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-            .reference { background: white; padding: 20px; border-left: 4px solid #B946C7; margin: 20px 0; }
-            .reference-number { font-size: 24px; font-weight: bold; color: #B946C7; }
-            .footer { text-align: center; margin-top: 20px; color: #666; font-size: 14px; }
+            body { font-family: 'Georgia', 'Times New Roman', serif; line-height: 1.8; color: #2c3e50; background-color: #f8f9fa; }
+            .container { max-width: 600px; margin: 0 auto; background: white; }
+            .header { background: linear-gradient(135deg, #1a5f3f 0%, #2d8659 100%); color: white; padding: 40px 30px; text-align: center; }
+            .header h1 { margin: 0; font-size: 28px; font-weight: normal; }
+            .moon { font-size: 40px; margin-bottom: 10px; }
+            .content { padding: 40px 30px; }
+            .content p { margin: 0 0 20px 0; font-size: 16px; line-height: 1.8; }
+            .highlight { background: linear-gradient(135deg, #1a5f3f 0%, #2d8659 100%); color: white; padding: 25px; margin: 30px 0; border-radius: 8px; text-align: center; }
+            .reference { font-size: 18px; font-weight: bold; letter-spacing: 1px; }
+            .contact { background: #f8f9fa; padding: 20px; border-left: 4px solid #2d8659; margin: 30px 0; }
+            .contact p { margin: 5px 0; font-size: 15px; }
+            .footer { text-align: center; padding: 30px; background: #f8f9fa; color: #666; }
+            .footer p { margin: 5px 0; }
+            .tagline { font-style: italic; color: #2d8659; margin-top: 10px; }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
-              <h1>Registration Successful!</h1>
+              <div class="moon">🌙</div>
+              <h1>Welcome to Noor-e-Quran</h1>
+              <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.95;">Ramadan Special Signature Course</p>
             </div>
+            
             <div class="content">
-              <p>Dear ${name},</p>
-              <p>Thank you for registering with Zyra Edutech! We have received your payment successfully.</p>
+              <p><strong>Assalamu Alaikum 🌙</strong></p>
               
-              <div class="reference">
-                <p style="margin: 0; font-size: 14px; color: #666;">Your Reference Number:</p>
-                <p class="reference-number">${referenceNumber}</p>
+              <p>Welcome to <strong>Noor-e-Quran</strong> – Ramadan Special Signature Course.</p>
+              
+              <p>With your enrollment of <strong>₹999</strong>, you haven't just joined a course —<br>
+              you've answered a call towards light, discipline, and inner transformation.</p>
+              
+              <p>Over the next <strong>27 days</strong>, the Quran will not just be read —<br>
+              it will be felt, understood, and lived.</p>
+              
+              <p>You are now part of a selected journey where Ramadan becomes a turning point, not just a month.</p>
+              
+              <div class="highlight">
+                <p style="margin: 0 0 10px 0; font-size: 14px; opacity: 0.9;">Your Reference Number</p>
+                <p class="reference">${referenceNumber}</p>
               </div>
               
-              <p><strong>What's Next?</strong></p>
-              <p>Our customer care team will reach out to you within 24 hours to complete your enrollment process.</p>
+              <p>📩 Course access details and next steps will be shared with you shortly.</p>
               
-              <p><strong>Contact Information:</strong></p>
-              <p>Phone: ${supportPhone}<br>
-              Email: ${supportEmail}</p>
+              <div class="contact">
+                <p><strong>For any assistance or support, feel free to reach us anytime:</strong></p>
+                <p>📞 ${supportPhone}</p>
+                <p>📧 ${supportEmail}</p>
+              </div>
               
-              <p>If you have any questions, please don't hesitate to contact us.</p>
+              <p>May this Ramadan bring Noor into your heart and direction into your life.</p>
               
-              <p>Best regards,<br>
-              <strong>Zyra Edutech Team</strong></p>
+              <p><strong>Welcome to the journey. Welcome to the light.</strong></p>
+              
+              <p style="margin-top: 30px;">Warm regards,<br>
+              <strong>Team Zyra Learning</strong><br>
+              <span class="tagline">Dil se Zindagi tak</span></p>
             </div>
+            
             <div class="footer">
               <p>© 2026 Zyra Edutech. All rights reserved.</p>
             </div>

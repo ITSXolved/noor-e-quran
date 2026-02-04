@@ -10,6 +10,7 @@ import {
     LogOut,
     Search,
     Filter,
+    Trash2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardContent } from '@/components/ui/Card';
@@ -38,6 +39,8 @@ export default function AdminDashboard() {
     const [selectedApp, setSelectedApp] = useState<Application | null>(null);
     const [remark, setRemark] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
+    const [deleteConfirm, setDeleteConfirm] = useState<Application | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
         fetchApplications();
@@ -91,6 +94,30 @@ export default function AdminDashboard() {
             alert('Failed to update status');
         } finally {
             setIsUpdating(false);
+        }
+    };
+
+    const handleDelete = async (appId: string) => {
+        setIsDeleting(true);
+        try {
+            const response = await fetch(`/api/admin/applications/${appId}/delete`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Failed to delete');
+            }
+
+            const data = await response.json();
+            alert(data.message || 'Application deleted successfully');
+            setDeleteConfirm(null);
+            fetchApplications();
+        } catch (error: any) {
+            console.error('Error deleting application:', error);
+            alert(error.message || 'Failed to delete application');
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -308,15 +335,25 @@ export default function AdminDashboard() {
                                                 {formatDate(app.created_at)}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                                {app.application_status === 'payment_done' && (
+                                                <div className="flex gap-2">
+                                                    {app.application_status === 'payment_done' && (
+                                                        <Button
+                                                            size="sm"
+                                                            variant="outline"
+                                                            onClick={() => setSelectedApp(app)}
+                                                        >
+                                                            Update Status
+                                                        </Button>
+                                                    )}
                                                     <Button
                                                         size="sm"
                                                         variant="outline"
-                                                        onClick={() => setSelectedApp(app)}
+                                                        onClick={() => setDeleteConfirm(app)}
+                                                        className="text-red-600 hover:text-red-700 hover:border-red-300"
                                                     >
-                                                        Update Status
+                                                        <Trash2 className="w-4 h-4" />
                                                     </Button>
-                                                )}
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
@@ -332,6 +369,55 @@ export default function AdminDashboard() {
                     </CardContent>
                 </Card>
             </div>
+
+            {/* Delete Confirmation Modal */}
+            {deleteConfirm && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <Card className="max-w-md w-full">
+                        <CardHeader className="bg-red-600 text-white">
+                            <h3 className="text-lg font-semibold">Confirm Deletion</h3>
+                        </CardHeader>
+                        <CardContent className="p-6">
+                            <div className="space-y-4">
+                                <div>
+                                    <p className="text-gray-700 mb-2">
+                                        Are you sure you want to delete this application?
+                                    </p>
+                                    <div className="bg-gray-50 p-3 rounded-lg">
+                                        <p className="font-medium">{deleteConfirm.name}</p>
+                                        <p className="text-sm text-gray-600">{deleteConfirm.reference_number}</p>
+                                        <p className="text-sm text-gray-600">{deleteConfirm.email}</p>
+                                    </div>
+                                </div>
+
+                                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                                    <p className="text-sm text-yellow-800">
+                                        ⚠️ This action cannot be undone. The application data will be permanently deleted.
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-3">
+                                    <Button
+                                        variant="outline"
+                                        className="flex-1"
+                                        onClick={() => setDeleteConfirm(null)}
+                                        disabled={isDeleting}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        className="flex-1 bg-red-600 hover:bg-red-700"
+                                        onClick={() => handleDelete(deleteConfirm.id)}
+                                        isLoading={isDeleting}
+                                    >
+                                        Delete
+                                    </Button>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            )}
 
             {/* Status Update Modal */}
             {selectedApp && (
