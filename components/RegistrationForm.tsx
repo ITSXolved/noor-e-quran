@@ -110,7 +110,7 @@ export default function RegistrationForm() {
                         });
 
                         // Redirect to confirmation page
-                        router.push(`/register/confirmation?ref=${verifyData.referenceNumber}`);
+                        router.push(`/register/confirmation?ref=${verifyData.referenceNumber}&name=${encodeURIComponent(data.name)}`);
                     } catch (error) {
                         console.error('Payment verification error:', error);
                         setError('Payment verification failed. Please contact support.');

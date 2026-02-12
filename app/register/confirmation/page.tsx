@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/Card';
 function ConfirmationContent() {
     const searchParams = useSearchParams();
     const referenceNumber = searchParams.get('ref') || 'N/A';
+    const customerName = searchParams.get('name');
     const supportPhone = process.env.NEXT_PUBLIC_SUPPORT_PHONE || '+91-1234567890';
 
     return (
@@ -29,7 +30,7 @@ function ConfirmationContent() {
                                 Welcome to Zyra Edutech! 🎉
                             </h1>
                             <p className="text-lg text-gray-600 mb-2">
-                                Thank you for registering with us
+                                Thank you {customerName ? <span className="font-semibold text-primary">{customerName}</span> : ''} for registering with us
                             </p>
                             <p className="text-md text-primary font-semibold">
                                 Your payment has been successfully processed
