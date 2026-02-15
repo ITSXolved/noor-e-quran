@@ -3,7 +3,7 @@ export interface Application {
   name: string;
   gender: 'Male' | 'Female' | 'Other';
   mobile: string;
-  email: string;
+  email?: string;
   city: string;
   occupation: 'Professional' | 'Housewife' | 'Business' | 'Student';
   razorpay_order_id?: string;
@@ -46,7 +46,7 @@ export interface RegistrationFormData {
   name: string;
   gender: 'Male' | 'Female' | 'Other';
   mobile: string;
-  email: string;
+  email?: string;
   city: string;
   occupation: 'Professional' | 'Housewife' | 'Business' | 'Student';
 }

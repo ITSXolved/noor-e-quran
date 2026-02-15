@@ -65,12 +65,14 @@ export async function POST(request: NextRequest) {
 
         // Send confirmation emails
         try {
-            // Send confirmation email to user
-            await sendUserConfirmationEmail({
-                to: application.email,
-                name: application.name,
-                referenceNumber: application.reference_number,
-            });
+            // Send confirmation email to user only if they provided an email
+            if (application.email) {
+                await sendUserConfirmationEmail({
+                    to: application.email,
+                    name: application.name,
+                    referenceNumber: application.reference_number,
+                });
+            }
 
             // Send notification email to admin
             await sendAdminNotificationEmail({

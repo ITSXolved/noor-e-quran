@@ -11,6 +11,7 @@ import {
     Search,
     Filter,
     Trash2,
+    RefreshCw,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardContent } from '@/components/ui/Card';
@@ -41,6 +42,7 @@ export default function AdminDashboard() {
     const [isUpdating, setIsUpdating] = useState(false);
     const [deleteConfirm, setDeleteConfirm] = useState<Application | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isSyncing, setIsSyncing] = useState(false);
 
     useEffect(() => {
         fetchApplications();
@@ -64,6 +66,28 @@ export default function AdminDashboard() {
     const handleLogout = async () => {
         await fetch('/api/admin/logout', { method: 'POST' });
         router.push('/admin/login');
+    };
+
+    const handleSyncPayments = async () => {
+        setIsSyncing(true);
+        try {
+            const response = await fetch('/api/admin/applications/sync-payments', {
+                method: 'POST',
+            });
+
+            if (!response.ok) throw new Error('Sync failed');
+
+            const data = await response.json();
+            alert(data.message || `${data.synced} payment(s) synced`);
+
+            // Refresh the applications list
+            fetchApplications();
+        } catch (error) {
+            console.error('Error syncing payments:', error);
+            alert('Failed to sync payments with Razorpay');
+        } finally {
+            setIsSyncing(false);
+        }
     };
 
     const handleStatusUpdate = async (appId: string, newStatus: string) => {
@@ -173,10 +197,21 @@ export default function AdminDashboard() {
                             </h1>
                             <p className="text-sm text-gray-600">Manage course applications</p>
                         </div>
-                        <Button variant="outline" onClick={handleLogout}>
-                            <LogOut className="w-4 h-4 mr-2" />
-                            Logout
-                        </Button>
+                        <div className="flex items-center gap-3">
+                            <Button
+                                variant="outline"
+                                onClick={handleSyncPayments}
+                                disabled={isSyncing}
+                                className="text-blue-600 hover:text-blue-700 hover:border-blue-300"
+                            >
+                                <RefreshCw className={`w-4 h-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
+                                {isSyncing ? 'Syncing...' : 'Sync with Razorpay'}
+                            </Button>
+                            <Button variant="outline" onClick={handleLogout}>
+                                <LogOut className="w-4 h-4 mr-2" />
+                                Logout
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </header>

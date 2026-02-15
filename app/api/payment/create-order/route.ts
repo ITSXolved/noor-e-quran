@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
         const body: RegistrationFormData = await request.json();
 
         // Validate request body
-        if (!body.name || !body.email || !body.mobile || !body.gender || !body.city || !body.occupation) {
+        if (!body.name || !body.mobile || !body.gender || !body.city || !body.occupation) {
             return NextResponse.json(
                 { error: 'Missing required fields' },
                 { status: 400 }

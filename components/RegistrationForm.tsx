@@ -14,7 +14,7 @@ const registrationSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters'),
     gender: z.enum(['Male', 'Female', 'Other']),
     mobile: z.string().regex(/^[6-9]\d{9}$/, 'Please enter a valid 10-digit mobile number'),
-    email: z.string().email('Please enter a valid email address'),
+    email: z.string().email('Please enter a valid email address').optional().or(z.literal('')),
     city: z.string().min(2, 'City must be at least 2 characters'),
     occupation: z.enum(['Professional', 'Housewife', 'Business', 'Student']),
 });
