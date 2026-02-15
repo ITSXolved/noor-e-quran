@@ -37,6 +37,7 @@ export default function AdminDashboard() {
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState<string>('all');
+    const [occupationFilter, setOccupationFilter] = useState<string>('all');
     const [selectedApp, setSelectedApp] = useState<Application | null>(null);
     const [remark, setRemark] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
@@ -148,13 +149,16 @@ export default function AdminDashboard() {
     const filteredApplications = applications.filter((app) => {
         const matchesSearch =
             app.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            app.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (app.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
             app.reference_number.toLowerCase().includes(searchTerm.toLowerCase());
 
         const matchesStatus =
             statusFilter === 'all' || app.application_status === statusFilter;
 
-        return matchesSearch && matchesStatus;
+        const matchesOccupation =
+            occupationFilter === 'all' || app.occupation === occupationFilter;
+
+        return matchesSearch && matchesStatus && matchesOccupation;
     });
 
     const getStatusColor = (status: string) => {
@@ -301,6 +305,17 @@ export default function AdminDashboard() {
                                     <option value="payment_pending">Payment Pending</option>
                                     <option value="payment_done">Payment Done</option>
                                     <option value="added_to_course">Added to Course</option>
+                                </select>
+                                <select
+                                    value={occupationFilter}
+                                    onChange={(e) => setOccupationFilter(e.target.value)}
+                                    className="px-4 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white"
+                                >
+                                    <option value="all">All Occupation</option>
+                                    <option value="Professional">Professional</option>
+                                    <option value="Housewife">Housewife</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Student">Student</option>
                                 </select>
                             </div>
                         </div>
