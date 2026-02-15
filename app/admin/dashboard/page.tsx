@@ -161,6 +161,13 @@ export default function AdminDashboard() {
         return matchesSearch && matchesStatus && matchesOccupation;
     });
 
+    const filteredAnalytics = {
+        total: filteredApplications.length,
+        paymentPending: filteredApplications.filter(app => app.application_status === 'payment_pending').length,
+        paymentDone: filteredApplications.filter(app => app.application_status === 'payment_done').length,
+        addedToCourse: filteredApplications.filter(app => app.application_status === 'added_to_course').length,
+    };
+
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'payment_pending':
@@ -228,7 +235,7 @@ export default function AdminDashboard() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-sm text-gray-600 mb-1">Total Applications</p>
-                                    <p className="text-3xl font-bold text-gray-900">{analytics.total}</p>
+                                    <p className="text-3xl font-bold text-gray-900">{filteredAnalytics.total}</p>
                                 </div>
                                 <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
                                     <Users className="w-6 h-6 text-primary" />
@@ -242,7 +249,7 @@ export default function AdminDashboard() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-sm text-gray-600 mb-1">Payment Pending</p>
-                                    <p className="text-3xl font-bold text-yellow-600">{analytics.paymentPending}</p>
+                                    <p className="text-3xl font-bold text-yellow-600">{filteredAnalytics.paymentPending}</p>
                                 </div>
                                 <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
                                     <Clock className="w-6 h-6 text-yellow-600" />
@@ -256,7 +263,7 @@ export default function AdminDashboard() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-sm text-gray-600 mb-1">Payment Done</p>
-                                    <p className="text-3xl font-bold text-blue-600">{analytics.paymentDone}</p>
+                                    <p className="text-3xl font-bold text-blue-600">{filteredAnalytics.paymentDone}</p>
                                 </div>
                                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                                     <CheckCircle className="w-6 h-6 text-blue-600" />
@@ -270,7 +277,7 @@ export default function AdminDashboard() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-sm text-gray-600 mb-1">Added to Course</p>
-                                    <p className="text-3xl font-bold text-green-600">{analytics.addedToCourse}</p>
+                                    <p className="text-3xl font-bold text-green-600">{filteredAnalytics.addedToCourse}</p>
                                 </div>
                                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                                     <GraduationCap className="w-6 h-6 text-green-600" />
